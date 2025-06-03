@@ -95,12 +95,9 @@ services:
     tty: true
 ```
 
-If you want to use your host user inside the container, run:
 ```bash
-echo "UID=$(id -u)" >> .env
-echo "GID=$(id -g)" >> .env
+chmod 777 data
 ```
-
 
 ### 5. Start the Container with Podman Compose
 

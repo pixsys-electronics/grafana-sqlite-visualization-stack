@@ -11,7 +11,5 @@ RUN npm install node-red-node-serialport node-red-dashboard node-red-contrib-mod
 # Expose port 1880 for Node-RED access
 EXPOSE 1880
 
-WORKDIR /data
-
 # Default command to start Node-RED
 CMD ["npm", "start", "--", "--userDir", "/data"]
