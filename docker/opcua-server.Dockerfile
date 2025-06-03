@@ -6,4 +6,6 @@ COPY opcua-server.py requirements.txt /opt/opc_mockup/datagenerator/
 
 RUN pip install -r requirements.txt
 
+EXPOSE 4840
+
 CMD [ "python" ,"./opcua-server.py"]
