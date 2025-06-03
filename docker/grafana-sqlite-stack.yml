@@ -1,0 +1,34 @@
+services:
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana-example
+    restart: always
+    env_file:
+      - .env
+    user:
+      "${UID}:${GID}"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../grafana-data:/var/lib/grafana
+      - ../sqlite-data:/db
+    depends_on:
+      - data-generator
+    networks: 
+      - grafana-sqlite-network
+  
+  data-generator:
+    image: sqlite-data-generator
+    container_name: data-generator-example
+    restart: always
+    env_file:
+      - .env
+    user:
+        "${UID}:${GID}"
+    volumes:
+      - ../sqlite-data:/workspace/sqlite-data
+    networks:
+      - grafana-sqlite-network
+
+networks:
+  grafana-sqlite-network:
