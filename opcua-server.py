@@ -9,13 +9,13 @@ async def main():
     # setup our server
     server = Server()
     await server.init()
-    server.set_endpoint("opc.tcp://0.0.0.0:4840/freeopcua/server/")
+    server.set_endpoint("opc.tcp://127.0.0.1:4840/opcua/server/")
 
     # setup our own namespace, not really necessary but should as spec
-    uri = "http://examples.freeopcua.github.io"
+    uri = "iot-stack"
     idx = await server.register_namespace(uri)
-    ns = "ns=2;s=freeopcua.Tags.pressure"
-    ns2 = "ns=2;s=freeopcua.Tags.temperature"
+    ns = f"ns={idx};s=freeopcua.Tags.pressure"
+    ns2 = f"ns={idx};s=freeopcua.Tags.temperature"
     
     min_val = -0.5
     max_val = 0.6
