@@ -5,19 +5,21 @@ services:
     restart: always
     env_file: 
       - ${ROOT_DIR}/.env
+    environment:
+      - GF_PLUGINS_PREINSTALL="frser-sqlite-datasource"
     user: "${UID}:${GID}"
     volumes:
       - ${ROOT_DIR}/grafana-data:/var/lib/grafana
       - ${ROOT_DIR}/sqlite-data:/db
     depends_on:
-      - data-generator
+      - sqlite-data-generator
     network_mode: host
   
-  data-generator:
+  sqlite-data-generator:
     build:
       context: ..
       dockerfile: docker/sqlite-data-generator.Dockerfile
-    image: sqlite-data-generator
+    image: sqlite-data-generator-example
     container_name: sqlite-data-generator-example
     restart: always
     env_file:
