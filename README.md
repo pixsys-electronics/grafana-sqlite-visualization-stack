@@ -18,16 +18,23 @@ mkdir sqlite-data
 
 ## Run with podman run
 ### Grafana
-If you want to run a grafana container separately and test bind-mounts permissions, run:
+If you want to run a stand-alone grafana container to make sure it works outside of a compose, run:
 ```bash
 # use *--userns=keep-id* to make sure that the host user that has created the folders for bind-mount is correctly mapped to the container
 # so that the permissions match
 # then, use *-u $(id -u):$(id -g)* to actually use your mapped user as container user
-podman run --userns=keep-id -u $(id -u):$(id -g) -v $(pwd)/grafana-data:/var/lib/grafana -p 3000:3000 -e GF_PLUGINS_PREINSTALL="frser-sqlite-datasource" grafana/grafana-enterprise:12.0.1
+podman run --userns=keep-id -u $(id -u):$(id -g) -v $(pwd)/grafana-data:/var/lib/grafana -v $(pwd)/sqlite-data:/db -p 3000:3000 -e GF_PLUGINS_PREINSTALL="frser-sqlite-datasource" grafana/grafana-enterprise:12.0.1
 ```
 **Note: make sure your container has access to internet so that grafana can download its plugins. This is not trivial since some firewall rules for Docker/Podman must be set. For the sake of ease and for development usage, add --network=host to the command above**
 
 For further informations about grafana on docker, visit [this page](https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/).
+
+### SQLite data generator
+If you want to run a stand-alone SQLite data generator container, run:
+```bash
+podman build -t sqlite-data-generator-example -f docker/sqlite-data-generator.Dockerfile .
+podman run --userns=keep-id -u $(id -u):$(id -g) -v $(pwd)/sqlite-data:/workspace/sqlite-data sqlite-data-generator-example
+```
 
 ## Run with podman-compose
 
