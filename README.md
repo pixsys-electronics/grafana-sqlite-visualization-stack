@@ -11,26 +11,6 @@
 podman run --userns=keep-id -u $(id -u):$(id -g) -v $(pwd)/grafana-data:/var/lib/grafana -p 3000:3000 grafana/grafana-enterprise:latest
 ```
 
-### Run from custom image
-```bash
-docker build -f docker/grafana.Dockerfile -t grafana-example .
-mkdir -p grafana-data
-docker run -it -u $(id -u):$(id -g) -p 3000:3000 -v $(pwd)/grafana-data:/var/lib/grafana grafana-example:latest
-```
-
-## SQLite
-```bash
-docker build -f docker/sqlite.Dockerfile -t sqlite-example .
-mkdir -p sqlite-data
-docker run -it -u $(id -u):$(id -g) -v $(pwd)/sqlite-data:/workspace -w /workspace sqlite-example:latest
-```
-
-## OPC-UA server
-```bash
-docker build -f docker/opcua-server.Dockerfile -t opcua-server-example .
-docker run -it -p 4840:4840 opcua-server-example:latest
-```
-
 ## NodeRED
 ```bash
 docker build -f docker/node-red.Dockerfile -t node-red-example .
@@ -38,22 +18,28 @@ mkdir node-red-data
 docker run -it -p 1880:1880 -v $(pwd)/node-red-data:/data node-red-example:latest
 ```
 
-## InfluxDB
+## Grafana-SQLite stack
+First, you need an .env file that contains:
+- UID of the container user
+- GID of the container user
+- ROOT_DIR, which is the base path for the persistent folders. Make sure you use the absolute path
+
+**Note: the preferred way to configure the container user is to make sure it matches the host user, so that there are no permissions issues**
+
 ```bash
-docker build -f docker/influxdb.Dockerfile -t influxdb-example .
-mkdir influxdb-data
-mkdir influxdb-config
-docker run -it -p 8086:8086 -v $(pwd)/influxdb-data:/var/lib/influxdb2 -v influxdb-config:/etc/influxdb2 influxdb-example:latest
+echo UID=$(id -u) >> .env
+echo GID=$(id -u) >> .env
+echo ROOT_DIR=$(pwd) >> .env
 ```
 
-## Grafana-SQLite stack
+Then, create the folders to use as persistent volumes:
 ```bash
 # create folders for persistent data
 mkdir sqlite-data
 mkdir grafana-data
-# change 
-chmod -R 777 grafana-data
-chmod -R 777 sqlite-data
-podman build -f docker/sqlite-data-generator.Dockerfile -t sqlite-data-generator .
-PODMAN_USERNS=keep-id podman compose -f docker/grafana-sqlite-stack.yml up
+```
+
+And finally run the compose:
+```bash
+PODMAN_USERNS=keep-id podman-compose -f docker/grafana-sqlite-stack.yml up
 ```

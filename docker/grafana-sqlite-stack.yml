@@ -5,6 +5,7 @@ services:
     restart: always
     env_file: 
       - ${ROOT_DIR}/.env
+    user: "${UID}:${GID}"
     volumes:
       - ${ROOT_DIR}/grafana-data:/var/lib/grafana
       - ${ROOT_DIR}/sqlite-data:/db
@@ -13,12 +14,15 @@ services:
     network_mode: host
   
   data-generator:
+    build:
+      context: .
+      dockerfile: sqlite-data-generator.Dockerfile
     image: sqlite-data-generator
-    container_name: data-generator-example
+    container_name: sqlite-data-generator-example
     restart: always
     env_file:
       - ${ROOT_DIR}/.env
+    user: "${UID}:${GID}"
     volumes:
       - ${ROOT_DIR}/sqlite-data:/workspace/sqlite-data
     network_mode: host
-  
