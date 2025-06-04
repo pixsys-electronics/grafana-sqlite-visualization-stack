@@ -3,11 +3,10 @@ services:
     image: docker.io/grafana/grafana-enterprise:12.0.1
     container_name: grafana-example
     restart: always
-    env_file: 
-      - ${ROOT_DIR}/.env
     environment:
       - GF_PLUGINS_PREINSTALL="frser-sqlite-datasource"
-    user: "${UID}:${GID}"
+    userns_mode: keep-id
+    user: ${MY_UID}:${MY_GID}
     volumes:
       - ${ROOT_DIR}/grafana-data:/var/lib/grafana
       - ${ROOT_DIR}/sqlite-data:/db
@@ -22,9 +21,8 @@ services:
     image: sqlite-data-generator-example
     container_name: sqlite-data-generator-example
     restart: always
-    env_file:
-      - ${ROOT_DIR}/.env
-    user: "${UID}:${GID}"
+    userns_mode: keep-id
+    user: ${MY_UID}:${MY_GID}
     volumes:
       - ${ROOT_DIR}/sqlite-data:/workspace/sqlite-data
     network_mode: host
