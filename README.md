@@ -6,7 +6,8 @@ retrieved from a SQLite database using [Docker](https://www.docker.com/). The fo
 ## Setup
 You will need:
 - a Linux distro
-- [podman](https://podman.io/)(v1.0.6) or [docker](https://www.docker.com/)(v28.1.1)
+- [podman](https://podman.io/)(v5.0.2) or [docker](https://www.docker.com/)(v28.1.1)
+- [podman-compose](https://docs.podman.io/en/v5.3.1/markdown/podman-compose.1.html)(1.0.6)
 
 **Note: some podman-compose options may change between versions. If the following code snippets does not work for you because you have a different podman version, check [the official repo for podman-compose](https://github.com/containers/podman-compose), checkout to the correct branch and look for some options changes**
 
