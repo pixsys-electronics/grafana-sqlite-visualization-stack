@@ -2,6 +2,16 @@
 - [Getting started with OPC-UA](https://medium.com/@muhammadfaiznoh/getting-started-with-opc-ua-in-docker-c68a883d5c65)
 
 ## Grafana
+
+### Run from scratch image
+```bash
+# use *--userns=keep-id* to make sure that the host user that has created the folders for bind-mount is correctly mapped to the container
+# so that the permissions match
+# then, use *-u $(id -u):$(id -g)* to actually use your mapped user as container user
+podman run --userns=keep-id -u $(id -u):$(id -g) -v $(pwd)/grafana-data:/var/lib/grafana -p 3000:3000 grafana/grafana-enterprise:latest
+```
+
+### Run from custom image
 ```bash
 docker build -f docker/grafana.Dockerfile -t grafana-example .
 mkdir -p grafana-data
@@ -38,8 +48,12 @@ docker run -it -p 8086:8086 -v $(pwd)/influxdb-data:/var/lib/influxdb2 -v influx
 
 ## Grafana-SQLite stack
 ```bash
+# create folders for persistent data
 mkdir sqlite-data
 mkdir grafana-data
-docker build -f docker/sqlite-data-generator.Dockerfile -t sqlite-data-generator .
-docker compose -f docker/grafana-sqlite-stack.yml up
+# change 
+chmod -R 777 grafana-data
+chmod -R 777 sqlite-data
+podman build -f docker/sqlite-data-generator.Dockerfile -t sqlite-data-generator .
+PODMAN_USERNS=keep-id podman compose -f docker/grafana-sqlite-stack.yml up
 ```

@@ -1,11 +1,8 @@
 # Use Node-RED as base
 FROM nodered/node-red:latest
 
-# Maintainer information
-LABEL maintainer="YourName <youremail@example.com>"
-
-# Install additional modules: Dashboard and Modbus
-RUN npm install node-red-node-serialport node-red-dashboard node-red-contrib-modbus node-red-contrib-modbus-flex-server --unsafe-perm && \
+# Install additional modules: Dashboard, OPC-UA, InfluxDB
+RUN npm install node-red-dashboard node-red-contrib-opcua node-red-contrib-influxdb && \
     npm cache clean --force
 
 # Expose port 1880 for Node-RED access

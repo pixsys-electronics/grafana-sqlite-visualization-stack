@@ -1,34 +1,24 @@
 services:
   grafana:
-    image: grafana/grafana-enterprise
+    image: docker.io/grafana/grafana-enterprise:latest
     container_name: grafana-example
     restart: always
-    env_file:
-      - .env
-    user:
-      "${UID}:${GID}"
-    ports:
-      - "3000:3000"
+    env_file: 
+      - ${ROOT_DIR}/.env
     volumes:
-      - ../grafana-data:/var/lib/grafana
-      - ../sqlite-data:/db
+      - ${ROOT_DIR}/grafana-data:/var/lib/grafana
+      - ${ROOT_DIR}/sqlite-data:/db
     depends_on:
       - data-generator
-    networks: 
-      - grafana-sqlite-network
+    network_mode: host
   
   data-generator:
     image: sqlite-data-generator
     container_name: data-generator-example
     restart: always
     env_file:
-      - .env
-    user:
-        "${UID}:${GID}"
+      - ${ROOT_DIR}/.env
     volumes:
-      - ../sqlite-data:/workspace/sqlite-data
-    networks:
-      - grafana-sqlite-network
-
-networks:
-  grafana-sqlite-network:
+      - ${ROOT_DIR}/sqlite-data:/workspace/sqlite-data
+    network_mode: host
+  
