@@ -15,8 +15,8 @@ services:
   
   data-generator:
     build:
-      context: .
-      dockerfile: sqlite-data-generator.Dockerfile
+      context: ..
+      dockerfile: docker/sqlite-data-generator.Dockerfile
     image: sqlite-data-generator
     container_name: sqlite-data-generator-example
     restart: always

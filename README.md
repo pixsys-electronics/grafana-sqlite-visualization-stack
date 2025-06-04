@@ -29,7 +29,6 @@ First, you need an .env file that contains:
 ```bash
 echo UID=$(id -u) >> .env
 echo GID=$(id -u) >> .env
-echo ROOT_DIR=$(pwd) >> .env
 ```
 
 Then, create the folders to use as persistent volumes:
@@ -41,5 +40,5 @@ mkdir grafana-data
 
 And finally run the compose:
 ```bash
-PODMAN_USERNS=keep-id podman-compose -f docker/grafana-sqlite-stack.yml up
+PODMAN_USERNS=keep-id ROOT_DIR=$(pwd) podman-compose -f docker/grafana-sqlite-stack.yml up --build
 ```
