@@ -31,7 +31,7 @@ For further informations about grafana on docker, visit [this page](https://graf
 
 ## Run with podman-compose
 
-**Note: the preferred way to configure the container user is to make sure it matches the host user that has created the directories to mount, so that there are no permissions issues.**
+**Note: the preferred way to configure the container user is to make sure it matches the host user that has created the directories to mount, so that there are no permissions issues. Note2: both containers of the podman-compose runs with network_mode=host by default**
 
 Set *ROOT_DIR* to the root directory where *grafana-data* and *sqlite-data* have been created, then set *MY_UID* and *MY_GID* so that they match the user that has created the directories to mount (grafana-data and sqlite-data).
 
@@ -40,9 +40,26 @@ Finally, run the compose:
 MY_UID=$(id -u) MY_GID=$(id -g) ROOT_DIR=$(pwd) podman-compose -f docker/grafana-sqlite-stack.yml up --build
 ```
 
-## NodeRED
-```bash
-docker build -f docker/node-red.Dockerfile -t node-red-example .
-mkdir node-red-data
-docker run -it -p 1880:1880 -v $(pwd)/node-red-data:/data node-red-example:latest
+## Grafana configuration
+To access the Grafana dashboard, navigate to the host device URL at port 3000 (the default port for Grafana). If you have access to the URL bar of the browser of your target device, navigate to:
+*127.0.0.1:3000*. You should see the default login page of Grafana. Access using:
+- user: admin
+- password: admin
+
+then you can optionally modify the default password (suggested).
+![Login](assets/login.png)
+
+In order to plot data from the SQLite database, you first need to configure the [data-source for SQLite](https://grafana.com/docs/grafana/latest/datasources/). Go to Home->Connections->Data sources->Add data source, look for SQLite (the plugin installed using *GF_PLUGINS_PREINSTALL*), select it and use */db/sample.db* as path for the database file. You can leave the rest of the configuration as it is, then press "Save and test".
+![Add data source](assets/add_data_source.png)
+
+Then, go to Home->Dashboards and create a new dashboard. Select the previous configured data-source as data source of the dashboard and create the dashboard.
+![Add dashboard](assets/add_dashboard.png)
+
+
+Then, scroll down to the query input file and write:
+```mysql
+SELECT timestamp as ts, value
+FROM table_sample
 ```
+save the query (or click outside the input text of the query) and you should see a plot of the default panel. 
+![Plot data](assets/dashboard_panel.png)
