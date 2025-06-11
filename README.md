@@ -21,15 +21,15 @@ If you have a WebPanel with [codesys](https://www.codesys.com/), or some other s
 	
 ## **Steps** 👣
 1. Connect to the device via SSH using the **`user`** account:
-   
-   ```bash
-   ssh user@<DEVICE_IP>
-   ```
+	
+	```bash
+	ssh user@<DEVICE_IP>
+	```
 2. Navigate to the persistent folder `/data/user`:
-   
-   ```bash
-   cd /data/user
-   ```
+	
+	```bash
+	cd /data/user
+	```
 
 3. Create a dedicated folder for the tutorial:
 	```bash
