@@ -197,7 +197,7 @@ If you have a WebPanel with [codesys](https://www.codesys.com/), or some other s
     ![Add dashboard](assets/add_dashboard.png)
 
     Then, scroll down to the query input file and write:
-    ```mysql
+    ```sql
     SELECT timestamp as ts, value
     FROM table_sample
     ```
