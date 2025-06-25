@@ -44,7 +44,7 @@ If you have a WebPanel with [codesys](https://www.codesys.com/), or some other s
 	```
 5. Run the container:
 
-	- If you only need the Grafana container and you already have a working SQLite database, just run:
+	- If you only need the Grafana container and you already have a working SQLite database inside a `SQLITE_FILE_FOLDER` , just run:
 	
 		```bash
 		podman run --userns=keep-id -u $(id -u):$(id -g) -v $(pwd)/grafana-data:/var/lib/grafana -v <SQLITE_FILE_FOLDER>:/db -p 3000:3000 -e GF_PLUGINS_PREINSTALL="frser-sqlite-datasource" grafana/grafana-enterprise:12.0.1
