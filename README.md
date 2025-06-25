@@ -123,9 +123,9 @@ If you have a WebPanel with [codesys](https://www.codesys.com/), or some other s
 				insert_loop()
 			```
 		
-		3. Enter the `docker` folder:
+		3. Enter the `podman` folder:
 			```bash
-			cd docker
+			cd podman
 			```
 
 		2. Create a `sqlite-data-generator.Dockerfile` file to run the SQLite data generator:
@@ -160,7 +160,7 @@ If you have a WebPanel with [codesys](https://www.codesys.com/), or some other s
 				sqlite-data-generator:
 					build:
 					context: ..
-					dockerfile: docker/sqlite-data-generator.Dockerfile
+					dockerfile: podman/sqlite-data-generator.Dockerfile
 					image: sqlite-data-generator-example
 					container_name: sqlite-data-generator-example
 					restart: always
@@ -174,7 +174,7 @@ If you have a WebPanel with [codesys](https://www.codesys.com/), or some other s
 
 		3. Build and run the compose:
 			```bash
-			MY_UID=$(id -u) MY_GID=$(id -g) ROOT_DIR=$(pwd) podman-compose -f docker/podman-compose.yml up --build
+			MY_UID=$(id -u) MY_GID=$(id -g) ROOT_DIR=$(pwd) podman-compose -f podman/podman-compose.yml up --build
 			```
 
 			**Note: in this case, the --userns and the user mapping are performed internally in the podman-compose.yml, and you just need to pass your UID and the GID**
