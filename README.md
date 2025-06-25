@@ -19,7 +19,7 @@ If you have a WebPanel with [codesys](https://www.codesys.com/), or some other s
 - Basic knowledge of [podman](https://podman.io/) and containers
 - Basic knowledge of Linux
 	
-## **Steps** 👣
+## **Steps** 🪜
 1. Connect to the device via SSH using the **`user`** account:
 	
 	```bash
